@@ -10,30 +10,12 @@ const express = require('express'),
 
 let server
 
-function configureUnprotectedPaths(helpers) {
-  const {exactURL, regexp} = helpers
-  return [
-    exactURL('/'),
-    exactURL('/favicon.ico'),
-    regexp(/^\/css/),
-    regexp(/^\/images/),
-    regexp(/^\/api\/public\//),
-    regexp(/^\/api\/ext\//), // uses other means of authentication
-    exactURL('/js/libs.js'),
-    exactURL('/js/login.js')
-  ]
-}
-
-function getSessionCookieName(env) {
-  return !env.test ? 'jelpp-session' : 'jelpp-test-session'
-}
-
 exports.boot = async function() {
   if (server) throw new Error('Already running')
   const env = envs.select()
   const app = configureApp(env)
   const port = env.port
-  server = app.listen(port)
+  server = app.listen(port, '127.0.0.1')
   winston.info(`Server listening in port ${port}`)
 }
 
@@ -45,7 +27,14 @@ exports.shutdown = async function() {
 
 function configureApp(env) {
   const app = express()
-  const shared = require('./server-shared').configure(env, configureUnprotectedPaths)
+  const shared = require('./server-shared').configure(env)
+  shared.config = {
+    template: __dirname + '/../data/templates/promises-async.js',
+    bluebirdWrapperPath: '../mongration-bluebird-wrapper',
+    mongoUrl: 'localhost/test',
+    devMigrationsPath: __dirname + '/../migrations/dev',
+    readyMigrationsPath: __dirname + '/../migrations/ready'
+  }
   if (env.test) {
     app.get('/', (req, res, next) => {
       res.redirect('test.html')
@@ -54,13 +43,6 @@ function configureApp(env) {
 
   app.use(less('../less', {dest: '/css', pathRoot: __dirname + '/../client/public'}))
 
-  app.use(session({
-    name: getSessionCookieName(env),
-    secret: '24c9aa642ec93b22ba9e0c530ce24a04',
-    saveUninitialized: false,
-    resave: false
-  }))
-  app.use(shared.authManager.middleware)
   app.use(express.static(__dirname + '/../client/public'))
 
   app.use(bodyParser.json())
@@ -78,9 +60,7 @@ function configureApp(env) {
 function configureBrowserifyRoutes(app, env) {
   const browserify = require('./browserify').configure(env)
   app.get('/js/client.js', browserify.client)
-  app.get('/js/login.js', browserify.login)
   app.get('/js/libs.js', browserify.libs)
-  app.get('/js/browser-tests.js', browserify.test)
 }
 
 function redirectErrorHandler(err, req, res, next) {

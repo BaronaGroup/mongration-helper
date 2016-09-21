@@ -42,7 +42,8 @@
     ],
     "no-multi-spaces": 1,
     "prefer-arrow-callback": 0,
-    "no-console": 1
+    "no-console": 1,
+    "react/prop-types": 0
   },
   "globals": {
     "Promise": false,

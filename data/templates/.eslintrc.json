@@ -1,0 +1,9 @@
+{
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "handle-callback-err": 2,
+    "no-sync": 2
+  }
+}

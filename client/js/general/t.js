@@ -1,1 +1,0 @@
-module.exports = require('../../../barona-js/translate-react/t')

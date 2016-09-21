@@ -23,8 +23,6 @@ exports.configure = function(env) {
 
   return {
     libs: api.configureLibraryRoute(!env.test && env.browserifyPrebuild),
-    client: api.configureRoute(__dirname + '/../client/js/client.js', !env.test && env.browserifyPrebuild),
-    login: api.configureRoute(__dirname + '/../client/js/login.js', !env.test && env.browserifyPrebuild),
-    test: api.configureRoute(__dirname + '/../test/browser/browser-tests.js', !!env.test && env.browserifyPrebuild)
+    client: api.configureRoute(__dirname + '/../client/js/client.js', !env.test && env.browserifyPrebuild)
   }
 }
