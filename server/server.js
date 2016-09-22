@@ -53,7 +53,7 @@ function configureApp(env) {
 
   const shared = require('./server-shared').configure(env)
   shared.config = config
-  
+
   if (env.test) {
     app.get('/', (req, res, next) => {
       res.redirect('test.html')
