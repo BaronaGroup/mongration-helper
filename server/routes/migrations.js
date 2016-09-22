@@ -12,6 +12,8 @@ exports.configure = function(app, env, shared) {
   systemRouter.async.get('migrations', getMigrations)
   systemRouter.async.post('migration', createMigration)
   systemRouter.async.get('migration/run/:name', runMigration)
+  systemRouter.async.get('migration/run/:name', runMigration)
+  systemRouter.async.post('migrations/commit', commit)
 
   async function sendConfig(req, res) {
     return shared.config
@@ -80,5 +82,15 @@ exports.configure = function(app, env, shared) {
 
     res.write('</body></html>')
     res.end()
+  }
+
+  async function commit(req, res) {
+    const config = shared.config
+    const migrations = req.body.migrations
+    if (!_.isArray(migrations)) throw new UserError(400, 'Missing migrations')
+    for (let migration of migrations) {
+      await fs.renameAsync(`${config.devMigrationsPath}/${migration}`, `${config.readyMigrationsPath}/${migration}`)
+    }
+    res.send({ok: true})
   }
 }

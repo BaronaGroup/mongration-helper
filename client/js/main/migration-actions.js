@@ -9,9 +9,9 @@ module.exports = class MigrationActions extends React.Component {
       <button onClick={commit} className="commit">Commit checked</button>
     </div>
 
-    function commit() {
+    async function commit() {
       if (!window.confirm('Are you sure?')) return
-      axios.post('/migrations/commit', {migrations: getChecked()})
+      await axios.post('/api/migrations/commit', {migrations: getChecked()})
       alert('Committed!')
       document.location.reload()
     }

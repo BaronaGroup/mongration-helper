@@ -37,7 +37,7 @@ module.exports = class MigrationList extends React.Component {
                 <Migration checked={isChecked(migration)} updateChecked={updateChecked} migration={migration}/>
               </li>)}
           </ol>
-          <MigrationActions />
+          <MigrationActions getChecked={() => this.state.checkedMigrations}/>
         </div>
       )
     }
