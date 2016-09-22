@@ -40,6 +40,9 @@
     "request": "^2.69.0",
     "selenium-webdriver": "^2.52.0"
   },
+  "bin": {
+    "mongration-helper": "./bin/app.js"
+  },
   "main": "./server/app",
   "scripts": {
     "selenium-test-firefox": "NODE_ENV=selenium-test SELENIUM_BROWSER=firefox ${NODE:-node} test/util/run-tests.js",
