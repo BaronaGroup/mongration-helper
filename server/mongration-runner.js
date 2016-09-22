@@ -17,12 +17,12 @@ exports.run = async function() {
       migrationCollection: config.migrationCollection
     })
 
-    migration.add(`${config.devMigrationsPath}/${migrationName}`)
+    migration.add(`${config.pathsRelativeTo}${config.devMigrationsPath}/${migrationName}`)
 
     const results = await P.fromNode(callback => migration.migrate(callback))
     // Success, now unflag it
     const dbConnection = await mongodb.MongoClient.connectAsync(config.mongoUrl)
-    await dbConnection.collection(config.migrationCollection).removeAsync({id: require(`${config.devMigrationsPath}/${migrationName}`).id})
+    await dbConnection.collection(config.migrationCollection).removeAsync({id: require(`${config.pathsRelativeTo}${config.devMigrationsPath}/${migrationName}`).id})
     dbConnection.close()
     console.log(JSON.stringify(results, null, 2))
     console.log('\nSuccess.')

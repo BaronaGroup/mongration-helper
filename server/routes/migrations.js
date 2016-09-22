@@ -20,7 +20,7 @@ exports.configure = function(app, env, shared) {
   }
 
   async function getMigrations() {
-    const dir = await fs.readdirAsync(shared.config.devMigrationsPath)
+    const dir = await fs.readdirAsync(`${shared.config.pathsRelativeTo}${shared.config.devMigrationsPath}`)
     const invalid = /^\.+$/
     return dir.filter(item => !invalid.test(item))
   }
@@ -34,13 +34,13 @@ exports.configure = function(app, env, shared) {
     }
     const template = await fs.readFileAsync(config.template, 'UTF-8')
     const today = new Date()
-    const prefix = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}T${today.getHours()}-${today.getMinutes()}-`
+    const prefix = `${today.getFullYear()}-${pad2(today.getMonth() + 1)}-${pad2(today.getDate())}T${pad2(today.getHours())}-${pad2(today.getMinutes())}-`
     const fullName = `${prefix}${name}`
     const filledTemplate = template
       .replace(/__migration-id__/g, fullName)
       .replace(/__bluebird-wrapper-path__/g, config.bluebirdWrapperPath)
 
-    await fs.writeFileAsync(`${config.devMigrationsPath}/${fullName}.js`, filledTemplate, 'UTF-8')
+    await fs.writeFileAsync(`${config.pathsRelativeTo}${config.devMigrationsPath}/${fullName}.js`, filledTemplate, 'UTF-8')
     return {ok: true}
   }
 
@@ -89,8 +89,14 @@ exports.configure = function(app, env, shared) {
     const migrations = req.body.migrations
     if (!_.isArray(migrations)) throw new UserError(400, 'Missing migrations')
     for (let migration of migrations) {
-      await fs.renameAsync(`${config.devMigrationsPath}/${migration}`, `${config.prodMigrationsPath}/${migration}`)
+      await fs.renameAsync(`${config.pathsRelativeTo}${config.devMigrationsPath}/${migration}`, `${config.pathsRelativeTo}${config.prodMigrationsPath}/${migration}`)
     }
     res.send({ok: true})
   }
+}
+
+function pad2(num) {
+  const s = num.toString()
+  if (s.length === 1) return '0' + s
+  return s
 }

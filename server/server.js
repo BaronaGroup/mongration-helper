@@ -20,7 +20,8 @@ const config = nodeGetOptLong.options([
   ['devMigrationsPath|d=s', 'The path in which migrations being developed are to be stored'],
   ['prodMigrationsPath|e=s', 'The path in which committed migrations are to be stored'],
   ['mongoUrl|m=s', 'Mongo URL'],
-  ['port|p=i', 'Port to use']
+  ['port|p=i', 'Port to use'],
+  ['pathsRelativeTo|r=s', 'Directory paths are relative to this path']
 
 ], {
   name: 'finder-o2-migration-tool',
@@ -31,7 +32,8 @@ const config = nodeGetOptLong.options([
     mongoUrl: 'mongodb://localhost/migration-test',
     devMigrationsPath: __dirname + '/../migrations/dev',
     prodMigrationsPath: __dirname + '/../migrations/ready',
-    migrationCollection: 'migrationversion'
+    migrationCollection: 'migrationversion',
+    pathsRelativeTo: ''
   }
 });
 
