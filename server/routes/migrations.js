@@ -43,6 +43,7 @@ exports.configure = function(app, env, shared) {
     res.write(`
       <html>
         <head>
+        <script src="/autoscroll.js"></script>
           <style type="text/css">
               body {
                   white-space: pre-wrap;
@@ -50,7 +51,7 @@ exports.configure = function(app, env, shared) {
           </style>
         </head>
         <body>`)
-    for (let num of _.range(1, 10)) {
+    for (let num of _.range(1, 20)) {
       res.write('<div>')
       res.write(`greetings from earth, ${num}\n`)
       res.write('</div>')
