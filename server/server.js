@@ -10,11 +10,36 @@ const express = require('express'),
 
 let server
 
+
+const nodeGetOptLong = require('node-getopt-long')
+
+const config = nodeGetOptLong.options([
+  ['template|f=s', 'Template to use'],
+  ['bluebirdWrapperPath|b=s', 'Path to bluebird wrapper as used from migration scripts, if relevant to selected template'],
+  ['migrationCollection|c=s', 'Collection to use for migration status. Can be the same as used for producion, not necessary though'],
+  ['devMigrationsPath|d=s', 'The path in which migrations being developed are to be stored'],
+  ['prodMigrationsPath|e=s', 'The path in which committed migrations are to be stored'],
+  ['mongoUrl|m=s', 'Mongo URL'],
+  ['port|p=i', 'Port to use']
+
+], {
+  name: 'finder-o2-migration-tool',
+  commandVersion: 0.1,
+  defaults: {
+    template: __dirname + '/../data/templates/promises-async.js',
+    bluebirdWrapperPath: '../mongration-bluebird-wrapper',
+    mongoUrl: 'mongodb://localhost/migration-test',
+    devMigrationsPath: __dirname + '/../migrations/dev',
+    prodMigrationsPath: __dirname + '/../migrations/ready',
+    migrationCollection: 'migrationversion'
+  }
+});
+
 exports.boot = async function() {
   if (server) throw new Error('Already running')
   const env = envs.select()
   const app = configureApp(env)
-  const port = env.port
+  const port = config.port || env.port
   server = app.listen(port, '127.0.0.1')
   winston.info(`Server listening in port ${port}`)
 }
@@ -28,28 +53,6 @@ exports.shutdown = async function() {
 function configureApp(env) {
   const app = express()
 
-  const nodeGetOptLong = require('node-getopt-long')
-
-  const config = nodeGetOptLong.options([
-    ['template|f=s', 'Template to use'],
-    ['bluebirdWrapperPath|b=s', 'Path to bluebird wrapper as used from migration scripts, if relevant to selected template'],
-    ['migrationCollection|c=s', 'Collection to use for migration status. Can be the same as used for producion, not necessary though'],
-    ['devMigrationsPath|d=s', 'The path in which migrations being developed are to be stored'],
-    ['prodMigrationsPath|p=s', 'The path in which committed migrations are to be stored'],
-    ['mongoUrl|m=s', 'Mongo URL'],
-
-  ], {
-    name: 'finder-o2-migration-tool',
-    commandVersion: 0.1,
-    defaults: {
-      template: __dirname + '/../data/templates/promises-async.js',
-      bluebirdWrapperPath: '../mongration-bluebird-wrapper',
-      mongoUrl: 'mongodb://localhost/migration-test',
-      devMigrationsPath: __dirname + '/../migrations/dev',
-      prodMigrationsPath: __dirname + '/../migrations/ready',
-      migrationCollection: 'migrationversion'
-    }
-  });
 
   const shared = require('./server-shared').configure(env)
   shared.config = config
