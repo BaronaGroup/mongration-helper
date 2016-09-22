@@ -27,15 +27,33 @@ exports.shutdown = async function() {
 
 function configureApp(env) {
   const app = express()
+
+  const nodeGetOptLong = require('node-getopt-long')
+
+  const config = nodeGetOptLong.options([
+    ['template|f=s', 'Template to use'],
+    ['bluebirdWrapperPath|b=s', 'Path to bluebird wrapper as used from migration scripts, if relevant to selected template'],
+    ['migrationCollection|c=s', 'Collection to use for migration status. Can be the same as used for producion, not necessary though'],
+    ['devMigrationsPath|d=s', 'The path in which migrations being developed are to be stored'],
+    ['prodMigrationsPath|p=s', 'The path in which committed migrations are to be stored'],
+    ['mongoUrl|m=s', 'Mongo URL'],
+
+  ], {
+    name: 'finder-o2-migration-tool',
+    commandVersion: 0.1,
+    defaults: {
+      template: __dirname + '/../data/templates/promises-async.js',
+      bluebirdWrapperPath: '../mongration-bluebird-wrapper',
+      mongoUrl: 'mongodb://localhost/migration-test',
+      devMigrationsPath: __dirname + '/../migrations/dev',
+      prodMigrationsPath: __dirname + '/../migrations/ready',
+      migrationCollection: 'migrationversion'
+    }
+  });
+
   const shared = require('./server-shared').configure(env)
-  shared.config = {
-    template: __dirname + '/../data/templates/promises-async.js',
-    bluebirdWrapperPath: '../mongration-bluebird-wrapper',
-    mongoUrl: 'mongodb://localhost/migration-test',
-    devMigrationsPath: __dirname + '/../migrations/dev',
-    readyMigrationsPath: __dirname + '/../migrations/ready',
-    migrationCollection: 'migrationversion'
-  }
+  shared.config = config
+  
   if (env.test) {
     app.get('/', (req, res, next) => {
       res.redirect('test.html')

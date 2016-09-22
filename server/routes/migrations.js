@@ -89,7 +89,7 @@ exports.configure = function(app, env, shared) {
     const migrations = req.body.migrations
     if (!_.isArray(migrations)) throw new UserError(400, 'Missing migrations')
     for (let migration of migrations) {
-      await fs.renameAsync(`${config.devMigrationsPath}/${migration}`, `${config.readyMigrationsPath}/${migration}`)
+      await fs.renameAsync(`${config.devMigrationsPath}/${migration}`, `${config.prodMigrationsPath}/${migration}`)
     }
     res.send({ok: true})
   }
