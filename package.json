@@ -41,7 +41,7 @@
     "selenium-webdriver": "^2.52.0"
   },
   "bin": {
-    "mongration-helper": "./bin/app.js"
+    "mongration-helper": "./server/app.js"
   },
   "main": "./server/app",
   "scripts": {
