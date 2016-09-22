@@ -1,6 +1,6 @@
 const P = require('bluebird')
-const mongodb = require("mongodb")
-P.promisifyAll(mongodb)
+tryPromisify('mongodb')
+tryPromisify('mongration/node_modules/mongodb')
 
 module.exports = function(migrationDeclaration) {
   const output = {
@@ -17,4 +17,11 @@ module.exports = function(migrationDeclaration) {
     }
   }
   return output
+}
+
+function tryPromisify(module) {
+  try {
+    const db = require(module)
+    P.promisifyAll(db)
+  } catch(e) {} //eslint-disable-line no-empty
 }
