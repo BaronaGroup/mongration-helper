@@ -1,7 +1,10 @@
 const router = require('../barona-router'),
   {UserError} = require('../server-errors'),
   fs = require('fs'),
-  _ = require('lodash')
+  _ = require('lodash'),
+  childProcess = require('child_process'),
+  Html5Entities = require('html-entities').Html5Entities,
+  P = require('bluebird')
 
 exports.configure = function(app, env, shared) {
   const systemRouter = router(app, '/api')
@@ -40,6 +43,16 @@ exports.configure = function(app, env, shared) {
   }
 
   async function runMigration(req, res) {
+    const migrationName = req.params.name
+    const cp = childProcess.fork( __dirname + '/../mongration-runner-init', [], {
+      env: {
+        MONGRATION_HELPER_CONFIG: JSON.stringify(shared.config),
+        MONGRATION_HELPER_MIGRATION: migrationName
+      },
+      silent: true,
+      stdio: ['pipe','pipe','pipe', 'ipc']
+    })
+
     res.write(`
       <html>
         <head>
@@ -51,17 +64,24 @@ exports.configure = function(app, env, shared) {
           </style>
         </head>
         <body>`)
-    for (let num of _.range(1, 20)) {
-      res.write('<div>')
-      res.write(`greetings from earth, ${num}\n`)
-      res.write('</div>')
-      await require('bluebird').delay(150)
-    }
-    if (Math.random() < 0.5) {
-      res.write('Success.')
-    } else {
-      res.write('Failure.')
-    }
+
+    cp.stdout.on('data', (data) => {
+      res.write(`<span class="stdout">${Html5Entities.encode(data.toString('UTF-8'))}</span>`)
+    })
+
+    cp.stderr.on('data', (data) => {
+      res.write(`<span class="stderr">${Html5Entities.encode(data.toString('UTF-8'))}</span>`)
+    })
+
+    await new P(resolve => {
+      cp.on('close', function(code) {
+        if (code !== 0) {
+          res.write(`<span>Response code ${code}</span>`)
+        }
+        return resolve()
+      })
+    })
+
     res.write('</body></html>')
     res.end()
   }

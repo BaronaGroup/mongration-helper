@@ -3,6 +3,8 @@ const axios = require('axios'),
   React = require('react'),
   P = require('bluebird')
 
+const isSuccess = /Success\.\n?$/
+
 let activeStreamReq = null,
   uid = 0
 
@@ -53,7 +55,7 @@ exports.Log = class Log extends React.Component {
       function loaded(e, item) {
         item.done = true
         const data = e.target.contentDocument.querySelector('body').textContent
-        const success = _.last(data.split('\n')) === 'Success.'
+        const success = isSuccess.test(data)
         resolve({success, log: data})
       }
     })
