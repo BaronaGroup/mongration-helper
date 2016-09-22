@@ -10,6 +10,7 @@ module.exports = class MigrationActions extends React.Component {
     </div>
 
     function commit() {
+      if (!window.confirm('Are you sure?')) return
       axios.post('/migrations/commit', {migrations: getChecked()})
       alert('Committed!')
       document.location.reload()

@@ -31,9 +31,10 @@ function configureApp(env) {
   shared.config = {
     template: __dirname + '/../data/templates/promises-async.js',
     bluebirdWrapperPath: '../mongration-bluebird-wrapper',
-    mongoUrl: 'localhost/test',
+    mongoUrl: 'mongodb://localhost/migration-test',
     devMigrationsPath: __dirname + '/../migrations/dev',
-    readyMigrationsPath: __dirname + '/../migrations/ready'
+    readyMigrationsPath: __dirname + '/../migrations/ready',
+    migrationCollection: 'migrationversion'
   }
   if (env.test) {
     app.get('/', (req, res, next) => {

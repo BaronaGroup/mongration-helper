@@ -1,5 +1,54 @@
+body.log{
+  body {
+      white-space: pre-wrap;
+  }
+}
+
+iframe {
+  border: none;
+  width: 80%;
+  min-height: 150px;
+}
+
 body {
   font-family: Monaco, serif;
+  font-size: 14px;
+  background: black;
+  color: lightgray;
+  ol {
+    list-style: none;
+  }
+
+  .settings {
+    background: lightgray;
+    color: black;
+    margin: 2em;
+    padding: 1em;
+    list-style: none;
+    .value {
+      color: #3e3f3a;
+    }
+  }
+  button {
+    background: transparent;
+    border: none;
+    color: cornflowerblue;
+    text-decoration: underline;
+  }
+  input[type=checkbox] {
+    position: relative;
+    left: -2000px;
+    width: 3em;
+    &::before{
+      position: relative;
+      left: 2000px;
+      top: -4px;
+      content:'[ ]';
+    }
+    &:checked::before {
+      content:'[X]';
+    }
+  }
 }
 
 .selected {

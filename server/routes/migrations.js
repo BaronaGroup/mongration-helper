@@ -32,7 +32,7 @@ exports.configure = function(app, env, shared) {
     }
     const template = await fs.readFileAsync(config.template, 'UTF-8')
     const today = new Date()
-    const prefix = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}-`
+    const prefix = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}T${today.getHours()}-${today.getMinutes()}-`
     const fullName = `${prefix}${name}`
     const filledTemplate = template
       .replace(/__migration-id__/g, fullName)
@@ -57,13 +57,9 @@ exports.configure = function(app, env, shared) {
       <html>
         <head>
         <script src="/autoscroll.js"></script>
-          <style type="text/css">
-              body {
-                  white-space: pre-wrap;
-              }
-          </style>
+          <link rel="stylesheet" href="/css/styles.css" />
         </head>
-        <body>`)
+        <body class=log>`)
 
     cp.stdout.on('data', (data) => {
       res.write(`<span class="stdout">${Html5Entities.encode(data.toString('UTF-8'))}</span>`)
