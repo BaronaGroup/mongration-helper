@@ -1,6 +1,6 @@
 "use strict"
 
-const supportLib = require('../barona-js/browserify/browserify-support')
+const supportLib = require('./barona-js/browserify/browserify-support')
 
 exports.configure = function(env) {
   const api = supportLib.configure({

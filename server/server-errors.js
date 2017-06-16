@@ -1,1 +1,1 @@
-module.exports = require('../barona-js/server-errors/server-errors')
+module.exports = require('./barona-js/server-errors/server-errors')

@@ -1,1 +1,1 @@
-module.exports = require('../barona-js/express-router/express-router')
+module.exports = require('./barona-js/express-router/express-router')
