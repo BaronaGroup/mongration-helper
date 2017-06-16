@@ -1,0 +1,13 @@
+{
+  "login": [
+    {
+      "username": "t.haka",
+      "password": "testi123",
+      "realm": "barona",
+      "name": {
+        "last": "Haka",
+        "first": "Tapani"
+      }
+    }
+  ]
+}

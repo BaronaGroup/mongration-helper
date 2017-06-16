@@ -1,2 +1,5 @@
 #!/bin/bash
-echo Would run firefox tests now
+set -e
+cd $(dirname $0)/../..
+./scripts/ci/init.sh
+npm run selenium-test-firefox

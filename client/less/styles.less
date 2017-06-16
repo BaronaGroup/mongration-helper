@@ -1,0 +1,27 @@
+.selected {
+  font-weight: bold;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg)
+  }
+
+  to {
+    transform: rotate(360deg)
+  }
+}
+
+.loading-indicator {
+  animation-duration: 3s;
+  animation-name: rotate;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.app-env-test {
+  -webkit-filter: hue-rotate(60deg);
+}

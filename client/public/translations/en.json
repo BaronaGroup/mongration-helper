@@ -1,0 +1,10 @@
+{
+  "greeting": {
+    "text": "Hello, __name__! 123"
+  },
+  "missing": {
+    "translation": "tsup tsup stup kek"
+  },
+  "counter": "__count__ ball",
+  "counter_plural": "__count__ balls"
+}

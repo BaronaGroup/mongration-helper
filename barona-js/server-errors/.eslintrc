@@ -1,0 +1,6 @@
+{
+  "extends": "../.eslintrc-node",
+  "env": {
+    "es6": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "semi": [
+      1,
+      "never"
+    ]
+  },
+  "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ]
+}

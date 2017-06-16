@@ -1,2 +1,5 @@
 #!/bin/bash
-echo Would run non-browser tests now
+set -e
+cd $(dirname $0)/../..
+./scripts/ci/init.sh
+npm run node-test
