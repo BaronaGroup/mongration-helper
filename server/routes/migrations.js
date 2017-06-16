@@ -21,7 +21,7 @@ exports.configure = function(app, env, shared) {
 
   async function getMigrations() {
     const dir = await fs.readdirAsync(`${shared.config.pathsRelativeTo}${shared.config.devMigrationsPath}`)
-    const invalid = /^\.+$/
+    const invalid = /^\..+$/
     return dir.filter(item => !invalid.test(item))
   }
 
