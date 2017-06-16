@@ -18,7 +18,7 @@ module.exports = class SettingsDisplay extends React.Component {
     if (!this.state.data) {
       return <Loading />
     } else {
-      const pairs = _.toPairs(this.state.data)
+      const pairs = (_.toPairs || _.pairs)(this.state.data)
       return <ul className="settings">
         {pairs.map(([key, value]) => <li key={key}>{key}: <span className="value">{value}</span></li>)}
         </ul>
