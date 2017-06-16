@@ -16,6 +16,8 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "glob": "^7.0.3",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "html-entities": "^1.2.0",
     "less-middleware": "^2.1.0",
     "lodash": "^4.6.0",
@@ -41,7 +43,7 @@
     "selenium-webdriver": "^2.52.0"
   },
   "bin": {
-    "mongration-helper": "./server/app.js"
+    "mongration-helper": "./build/app.js"
   },
   "main": "./server/app",
   "scripts": {
@@ -52,7 +54,9 @@
     "node-test": "mocha test/node",
     "start": "${NODE:-node} server/app.js",
     "eslint": "./node_modules/.bin/eslint . --ext .js,.jsx",
-    "node-dev": "NODE=node-dev npm run $*"
+    "node-dev": "NODE=node-dev npm run $*",
+    "gulp": "gulp",
+    "install": "gulp"
   },
   "engines": {
     "node": ">= 4.3.0"
