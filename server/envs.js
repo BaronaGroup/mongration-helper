@@ -1,5 +1,5 @@
-const _ = require('lodash'),
-  noAuth = require('../barona-js/auth-manager/auth-providers/test-no-auth')
+const _ = require('lodash')
+
 const defaults = {
   dev: false,
   browserifyPrebuild: true,
