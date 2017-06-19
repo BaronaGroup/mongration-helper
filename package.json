@@ -52,7 +52,7 @@
     "selenium-test-ie": "NODE_ENV=selenium-test SELENIUM_BROWSER=ie ${NODE:-node} test/util/run-tests.js",
     "browser-test": "NODE_ENV=browser-test ${NODE:-node} server/app.js",
     "node-test": "mocha test/node",
-    "start": "${NODE:-node} server/app.js",
+    "start": "${NODE:-node} server/app.js $*",
     "eslint": "./node_modules/.bin/eslint . --ext .js,.jsx",
     "node-dev": "NODE=node-dev npm run $*",
     "gulp": "gulp",
