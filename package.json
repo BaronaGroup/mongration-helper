@@ -56,7 +56,8 @@
     "eslint": "./node_modules/.bin/eslint . --ext .js,.jsx",
     "node-dev": "NODE=node-dev npm run $*",
     "gulp": "gulp",
-    "preinstall": "gulp"
+    "preinstall": "echo '#!/usr/bin/env node' > ./build/app.js"
+    "install": "gulp"
   },
   "engines": {
     "node": ">= 4.3.0"
